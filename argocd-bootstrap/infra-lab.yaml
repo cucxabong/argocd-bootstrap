@@ -3,3 +3,5 @@ applications:
     enabled: true
   secretStoreCSIProviderGCP:
     enabled: true
+  nginxIngress:
+    enabled: true
