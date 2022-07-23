@@ -11,7 +11,7 @@ applications:
         automated: {}
       source:
         targetRevision: 1.2.2
-        chart: csi-secrets-store
+        chart: secrets-store-csi-driver
         repoURL: https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
   secretStoreCSIProviderGCP:
     name: secrets-store-csi-driver-provider-gcp
