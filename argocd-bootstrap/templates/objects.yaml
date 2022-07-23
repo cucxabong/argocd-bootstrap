@@ -6,7 +6,7 @@ kind: Application
 metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  name: {{ $.Release.Name | trunc (int (sub 62 (len $cfg.name))) | trimSuffix "-" }}-{{ $cfg.name }}
+  name: {{ $cfg.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
   {{- $cfg.spec | toYaml | nindent 2 }}
