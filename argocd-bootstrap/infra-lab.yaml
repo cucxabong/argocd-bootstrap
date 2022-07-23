@@ -5,3 +5,7 @@ applications:
     enabled: true
   nginxIngress:
     enabled: true
+    spec:
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
