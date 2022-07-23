@@ -1,0 +1,71 @@
+applications:
+  csiSecretStore:
+    name: csi-secrets-store
+    enabled: false
+    spec:
+      project: default
+      destination:
+        namespace: kube-system
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated: {}
+      source:
+        targetRevision: 1.2.2
+        chart: csi-secrets-store
+        repoURL: https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
+  secretStoreCSIProviderGCP:
+    name: secrets-store-csi-driver-provider-gcp
+    enabled: false
+    spec:
+      project: default
+      destination:
+        namespace: kube-system
+        server: https://kubernetes.default.svc
+      source:
+        repoURL: git@github.com:GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp.git
+        targetRevision: v1.1.0
+        path: deploy
+      syncPolicy:
+        automated: {}
+  nginxIngress:
+    name: nginx-ingress
+    enabled: false
+    spec:
+      project: default
+      destination:
+        namespace: infrastructure
+        server: https://kubernetes.default.svc
+      source:
+        targetRevision: 4.2.0
+        chart: ingress-nginx
+        repoURL: https://kubernetes.github.io/ingress-nginx
+      syncPolicy:
+        automated: {}
+  certManager:
+    name: cert-manager
+    enabled: false
+    spec:
+      project: default
+      destination:
+        namespace: infrastructure
+        server: https://kubernetes.default.svc
+      source:
+        targetRevision: 0.7.1
+        chart: cert-manager
+        repoURL: https://charts.bitnami.com/bitnami
+      syncPolicy:
+        automated: {}
+  externalDNS:
+    name: external-dns
+    enabled: false
+    spec:
+      project: default
+      destination:
+        namespace: infrastructure
+        server: https://kubernetes.default.svc
+      source:
+        targetRevision: 6.7.0
+        chart: external-dns
+        repoURL: https://charts.bitnami.com/bitnami
+      syncPolicy:
+        automated: {}

@@ -1,0 +1,14 @@
+{{- range $svc, $cfg := .Values.applications }}
+{{- if $cfg.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: {{ $.Release.Name | trunc (int (sub 62 (len $cfg.name))) | trimSuffix "-" }}-{{ $cfg.name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  {{- $cfg.spec | toYaml | nindent 2 }}
+{{- end }}
+{{- end }}
