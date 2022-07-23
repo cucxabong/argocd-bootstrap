@@ -22,7 +22,7 @@ applications:
         namespace: kube-system
         server: https://kubernetes.default.svc
       source:
-        repoURL: git@github.com:GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp.git
+        repoURL: https://github.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp.git
         targetRevision: v1.1.0
         path: deploy
       syncPolicy:
