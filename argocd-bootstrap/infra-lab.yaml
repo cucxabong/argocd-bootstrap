@@ -1,0 +1,5 @@
+applications:
+  csiSecretStore:
+    enabled: true
+  secretStoreCSIProviderGCP:
+    enabled: true
