@@ -9,6 +9,10 @@ metadata:
   name: {{ $cfg.name | trunc 63 | trimSuffix "-" }}
   namespace: {{ $.Release.Namespace }}
 spec:
-  {{- $cfg.spec | toYaml | nindent 2 }}
+  source:
+  {{- toYaml $cfg.spec.source | nindent 4 }}
+  destination: {{- include "argocd-boostrap.destination" (dict "cfg" $cfg.spec "global" $.Values.global) | nindent 4 }}
+  project: {{ include "argocd-boostrap.project" $cfg.spec }}
+  {{- include "argocd-boostrap.syncPolicy" (dict "cfg" $cfg.spec "global" $.Values.global) | nindent 2 }}
 {{- end }}
 {{- end }}

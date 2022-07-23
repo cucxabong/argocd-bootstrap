@@ -1,0 +1,12 @@
+applications:
+  csiSecretStore:
+    enabled: false
+  nginxIngress:
+    enabled: true
+    spec:
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+      destination:
+        namespace: infrastructure
+        name: thetan-arena-infra-gke

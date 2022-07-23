@@ -1,11 +1,67 @@
 applications:
   csiSecretStore:
-    enabled: true
+    enabled: false
   secretStoreCSIProviderGCP:
-    enabled: true
+    enabled: false
   nginxIngress:
     enabled: true
     spec:
       syncPolicy:
+        automated: {}
         syncOptions:
           - CreateNamespace=true
+  externalDNS:
+    enabled: true
+    spec:
+      destination:
+        namespace: infrastructure
+        server: https://kubernetes.default.svc
+      source:
+        targetRevision: 6.7.0
+        chart: external-dns
+        repoURL: https://charts.bitnami.com/bitnami
+        helm:
+          values: |
+            # domainFilters:
+            #   - .infra-lab.thetanarena.com
+            txtOwnerId: "infra-lab-gke"
+            provider: cloudflare
+            serviceAccount:
+              create: true
+              name: "external-dns"
+              automountServiceAccountToken: true
+              annotations:
+                iam.gke.io/gcp-service-account: external-dns@thetan-staging.iam.gserviceaccount.com
+            extraEnvVarsSecret: external-dns-cloudflare-api-token
+            extraVolumeMounts:
+              - mountPath: /csi-secrets-sync-dummy
+                name: cloudflare-api-token
+                readOnly: true
+            extraVolumes:
+              - csi:
+                  driver: secrets-store.csi.k8s.io
+                  readOnly: true
+                  volumeAttributes:
+                    secretProviderClass: external-dns-cloudflare-api-token
+                name: cloudflare-api-token
+            extraDeploy:
+              - apiVersion: secrets-store.csi.x-k8s.io/v1
+                kind: SecretProviderClass
+                metadata:
+                  name: external-dns-cloudflare-api-token
+                spec:
+                  parameters:
+                    secrets: |
+                      - resourceName: "projects/thetan-staging/secrets/infra-lab-external-dns-cloudflare-api-token/versions/latest"
+                        fileName: "cloudflare-api-token"
+                  provider: gcp
+                  secretObjects:
+                    - data:
+                        - key: CF_API_TOKEN
+                          objectName: cloudflare-api-token
+                      secretName: external-dns-cloudflare-api-token
+                      type: Opaque
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated: {}
